@@ -23,8 +23,8 @@ export default function NavPagination () {
   return (
     <AppBar position="fixed" color="inherit" sx={{ top: 'auto', bottom: 0 }} >
       <Container maxWidth={'md'}>
-        <Toolbar disableGutters sx={{minHeight: '68px'}}>
-          <Grid container justifyContent="space-between" sx={{minHeight: '68px', paddingTop: '14px'}}>
+        <Toolbar disableGutters sx={{minHeight: '68px', width: '100%'}}>
+          <Grid container justifyContent="space-between" sx={{minHeight: '68px', paddingTop: '14px', width: '100%'}}>
             <Grid>
               <Button
                 sx={{display: {xs: 'none', md: 'flex'}}}
