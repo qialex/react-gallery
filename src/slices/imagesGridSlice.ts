@@ -1,4 +1,5 @@
 import { createAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createSelector } from "@reduxjs/toolkit";
 import { defaultPagination, PAGINATION_LIMIT_MAX, PAGINATION_LIMIT_MIN, LOCAL_STORAGE_PAGINATION_LIMIT_KEY, PAGINATION_PAGE_MIN, PaginationChangeType, ImageApiStatus, LOCAL_STORAGE_PAGINATION_PAGE_KEY } from "../constants";
 import { GridIndex, Image, Pagination } from "../types";
 import { LocalStorageService } from "../services/localStorageService";
@@ -145,12 +146,26 @@ export const imagesGrid = createSlice({
 export default imagesGrid.reducer;
 
 
-// selector pagination
-export const selectPagination = () => (state: RootState): Pagination => state[imagesGridKey].pagination
-// is first page selector
-export const isFirstPageSelector = () => (state: RootState) => state[imagesGridKey].pagination.page === 1
-// select images grid
-export const selectImagesGrid = () => (state: RootState) => {
-  const { start, end } = getStartEndIndex(state[imagesGridKey].pagination)
-  return state[imagesGridKey].gridIndexes.filter((gridIndex: GridIndex) => gridIndex.index >= start && gridIndex.index < end)
-}
+// selector pagination - memoized
+export const selectPagination = createSelector(
+  [(state: RootState) => state[imagesGridKey].pagination],
+  (pagination) => pagination
+);
+
+// is first page selector - memoized
+export const isFirstPageSelector = createSelector(
+  [(state: RootState) => state[imagesGridKey].pagination.page],
+  (page) => page === 1
+);
+
+// select images grid - memoized
+export const selectImagesGrid = createSelector(
+  [
+    (state: RootState) => state[imagesGridKey].pagination,
+    (state: RootState) => state[imagesGridKey].gridIndexes
+  ],
+  (pagination, gridIndexes) => {
+    const { start, end } = getStartEndIndex(pagination);
+    return gridIndexes.filter((gridIndex: GridIndex) => gridIndex.index >= start && gridIndex.index < end);
+  }
+);

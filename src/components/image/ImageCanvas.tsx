@@ -3,50 +3,52 @@ import { Stack } from "@mui/material";
 import { CircularProgress } from '@mui/material';
 import { useOnScreen } from "../../hooks/onSecreen";
 import { useAppSelector } from "../../hooks/reduxHooks";
-import { getItemById, getImageUrlForCanvas } from "../../slices/imageSlice";
+import { getItemById, makeSelectImageUrlForCanvas } from "../../slices/imageSlice";
 
 export function ImagesCanvas (props: {id: number, showEdited?: boolean, width?: string|number, height?: string|number}) {
   const { id, showEdited, width, height } = props;
   const getItemByIdMemo = useMemo(() => getItemById(id), [id])
   const image = useAppSelector(getItemByIdMemo)
 
-  const getImageUrlForCanvasMemo = useMemo(() => getImageUrlForCanvas(id, !!showEdited), [id, showEdited])
-  const imgUrl = useAppSelector(getImageUrlForCanvasMemo)
+  const selectImageUrl = useMemo(() => makeSelectImageUrlForCanvas(id, !!showEdited), [id, showEdited])
+  const imgUrl = useAppSelector(selectImageUrl)
 
-  const [isVisibleAlready, setIsVisibleAlready] = useState<boolean>(!!showEdited)
   const [isLoaded, setIsLoaded] = useState<boolean>(false)
 
   const ref = useRef<HTMLDivElement>(null);
   const isVisibleNow = useOnScreen(ref);
 
-  const isImageVisible = useMemo(() => (
-    isVisibleNow && isLoaded
-  ), [isVisibleNow, isLoaded]);
+  const imageRef = useRef<HTMLImageElement>(null);
+
+  // For showEdited mode, always show immediately. For gallery, use lazy loading
+  const shouldLoad = showEdited || isVisibleNow;
 
   useEffect(() => {
-    if (isVisibleNow && !isVisibleAlready) {
-      setIsVisibleAlready(true)
+    if (imageRef?.current && imageRef?.current?.src !== imgUrl) {
+      setIsLoaded(false)
     }
-  }, [isVisibleNow, isVisibleAlready])
-
-  useEffect(() => {
-    setIsLoaded(false)
   }, [imgUrl])
 
   const onloadImage = () => {
+    console.log("onloadImage", id)
     setIsLoaded(true)
   }
 
+  const isImageVisible = shouldLoad && isLoaded;
+
   return (
     <Stack ref={ref}>
-      <img
-        width={width}
-        height={height}
-        src={isVisibleAlready ? imgUrl : ''}
-        onLoad={onloadImage}
-        alt={image?.author || ''} 
-        style={{lineHeight: 0, display: isImageVisible ? 'block' : 'none', width, height}}
-      />
+      {shouldLoad && imgUrl && imgUrl.length > 0 && (
+        <img
+          ref={imageRef}
+          width={width}
+          height={height}
+          src={imgUrl}
+          onLoad={onloadImage}
+          alt={image?.author || ''}
+          style={{lineHeight: 0, display: isImageVisible ? 'block' : 'none', width, height}}
+        />
+      )}
       <Stack
         sx={{display: isImageVisible ? 'none' : 'flex', height, width, }}
         alignItems={'center'}

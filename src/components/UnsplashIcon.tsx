@@ -1,7 +1,7 @@
 export default function UnsplashLogo (props: {width: number, height: number}) {
   return (
     <img
-        src='/task-gallery/unsplash_logo.png'
+        src={`${import.meta.env.BASE_URL}unsplash_logo.png`}
         width={props.width}
         height={props.height}
         alt='unsplash logo'

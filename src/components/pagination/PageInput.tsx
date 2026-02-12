@@ -1,16 +1,15 @@
 import { TextField } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { selectPagination, setPagination } from "../../slices/imagesGridSlice";
-import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { parseNumValue } from "../../utils";
 import { PAGINATION_PAGE_MIN, PaginationChangeType } from "../../constants";
 
 export default function PageInput () {
   const dispatch = useAppDispatch();
   // pagination
-  const selectPaginationMemo = useMemo(() => selectPagination(), [])
-  const pagination = useAppSelector(selectPaginationMemo);
-  
+  const pagination = useAppSelector(selectPagination);
+
   const [value, setValue] = useState<string>(pagination.page.toString());
 
   // set value if page changed
@@ -48,7 +47,7 @@ export default function PageInput () {
   }
 
   // handle blur as submit
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement>): void => {
+  const handleBlur = (): void => {
     dispatchChange();
   }
 

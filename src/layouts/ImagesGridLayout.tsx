@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Outlet, useSearchParams } from "react-router-dom";
 import { parseNumValue } from "../utils";
 import NavPagination from "../components/nav/NavPagination";
@@ -11,8 +11,7 @@ import { defaultPagination, PaginationChangeType } from "../constants";
 const ImagesGridLayout = () => {
   const dispatch = useAppDispatch();
   // pagination
-  const selectPaginationMemo = useMemo(() => selectPagination(), [])
-  const pagination = useAppSelector(selectPaginationMemo);
+  const pagination = useAppSelector(selectPagination);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const prevRef = useRef<{state: Pagination, url: Pagination}>();

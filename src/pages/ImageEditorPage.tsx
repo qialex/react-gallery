@@ -29,8 +29,7 @@ export default function ImageEditorPage() {
   const { id } = useParams();
   const dispatch = useAppDispatch();
   // pagination
-  const selectPaginationMemo = useMemo(() => selectPagination(), []);
-  const pagination = useAppSelector(selectPaginationMemo);
+  const pagination = useAppSelector(selectPagination);
   // image
   const getItemByIdMemo = useMemo(() => getItemById(parseInt(id || '')), [id])
   const image: Image|undefined = useAppSelector(getItemByIdMemo)
@@ -170,7 +169,7 @@ export default function ImageEditorPage() {
       {/* <EditorCrop /> */}
 
       <Grid container>
-        <Grid item xs={2} sm={2} md={2} lg={2} xl={2} sx={{minWidth: '3.5rem'}}>
+        <Grid size={{ xs: 2 }} sx={{minWidth: '3.5rem'}}>
           <Stack sx={{mt: 2}}>
             {image ? 
               <ImagesCard
@@ -184,37 +183,42 @@ export default function ImageEditorPage() {
           <Stack sx={{mt: 2}}>
             <Card>
               <CardContent sx={{padding: {xs: 1, md: 2}}}>
-                <Grid component='div' container spacing={2}>
-                  {editorEtems.map((item, key) => 
-                    <Grid item xs={12} key={key.toString()}>
-                      {item.isDivider ? 
-                        <Divider /> 
+                <Grid container spacing={2}>
+                  {editorEtems.map((item, i) => (
+                    <Grid key={i.toString()} size={{ xs: 12 }}>
+                      {item.isDivider ?
+                        <Divider/>
                         :
-                        <Stack 
-                          direction={'row'} 
-                          alignItems={'center'} 
-                          spacing={2} 
+                        <Stack
+                          direction={'row'}
+                          alignItems={'center'}
+                          spacing={2}
                           sx={{cursor: 'pointer'}}
                           onClick={() => !item.isLink && item?.onClick && item?.onClick()}
                         >
-                          <Link 
-                            component={item.isLink ? ReactRouterLink : 'div'} 
-                            to={item.url} 
+                          <Link
+                            component={item.isLink ? ReactRouterLink : 'div'}
+                            to={item.url}
                             // onClick={() => !item.isLink && item?.onClick && item?.onClick()}
                           >
-                            <Avatar sx={{ bgcolor: item.avatarColor }}>
+                            <Avatar sx={{bgcolor: item.avatarColor}}>
                               {item.icon}
                             </Avatar>
                           </Link>
                           <Box sx={{overflow: 'hidden'}}>
-                            <Link 
+                            <Link
                               underline={item.isLink ? 'always' : 'hover'}
-                              component={item.isLink ? ReactRouterLink : 'div'} 
-                              to={item.url} 
-                              sx={{overflow: 'hidden'}} 
+                              component={item.isLink ? ReactRouterLink : 'div'}
+                              to={item.url}
+                              sx={{overflow: 'hidden'}}
                             >
-                              <Typography 
-                                sx={{ overflow: 'hidden', display: 'block', textWrap: 'nowrap', textOverflow: 'ellipsis' }}
+                              <Typography
+                                sx={{
+                                  overflow: 'hidden',
+                                  display: 'block',
+                                  textWrap: 'nowrap',
+                                  textOverflow: 'ellipsis'
+                                }}
                               >
                                 {item.title}
                               </Typography>
@@ -223,13 +227,13 @@ export default function ImageEditorPage() {
                         </Stack>
                       }
                     </Grid>
-                  )}
+                  ))}
                 </Grid>
               </CardContent>
             </Card>
           </Stack>
         </Grid>
-        <Grid item xs={10} sm={10} md={10} lg={10} xl={10} sx={{maxWidth: 'min(calc(100% - 3.5rem), 83.3333%);'}}>
+        <Grid size={{ xs: 10 }} sx={{maxWidth: 'min(calc(100% - 3.5rem), 83.3333%);'}}>
           {imgUrl && image?.id ? <>
             {/* <Stack direction={'row'}> */}
               <Stack justifyContent={'center'} alignItems={'center'} sx={{padding: {xs: 1, md: 3, lg: 6}, paddingTop: {xs: 1, md: 4, lg: 9, xl: 12}}}>
