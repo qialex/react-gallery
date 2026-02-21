@@ -32,6 +32,8 @@ A high-performance image gallery and editor built with React and TypeScript. Fea
 ## Tech Stack
 
 - **React 18** with TypeScript
+- **Vite** for fast development and optimized builds
+- **Bun** for package management and runtime
 - **Canvas API** for image manipulation
 - **Intersection Observer API** for performance
 - **Custom hooks** for reusable logic (`onScreen`, `useHistory`)
@@ -53,8 +55,8 @@ A high-performance image gallery and editor built with React and TypeScript. Fea
 
 ## Installation
 ```bash
-npm install
-npm start
+bun install
+bun dev
 ```
 
 Opens at `http://localhost:3000`
