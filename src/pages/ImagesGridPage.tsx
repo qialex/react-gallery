@@ -1,5 +1,5 @@
-import { useEffect, useMemo } from "react";
-import { Button, Grid, Stack } from "@mui/material";
+import { useEffect } from "react";
+import { Button, Stack, Grid } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { GridIndex } from "../types";
 import { ImageApiStatus } from "../constants";
@@ -11,8 +11,7 @@ import { getImages } from "../slices/api/ApiSlice";
 
 
 export default function ImagesGridPage () {
-  const selectImagesGridMemo = useMemo(selectImagesGrid, [])
-  const gridIndexes = useAppSelector(selectImagesGridMemo)
+  const gridIndexes = useAppSelector(selectImagesGrid)
 
   const dispatch = useAppDispatch();
 
@@ -48,9 +47,9 @@ export default function ImagesGridPage () {
 
       {/* Normal grid page */}
       <Grid container spacing={2}>
-        {gridIndexes.map((gridIndex: GridIndex, i: number) => 
+        {gridIndexes.map((gridIndex: GridIndex, i: number) =>
           {
-            return <Grid item key={gridIndex.index.toString() + i.toString()} xs={12} sm={6} md={4} lg={3} xl={2}>
+            return <Grid key={gridIndex.index.toString() + i.toString()} size={{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }}>
               {typeof gridIndex.imageId === 'number' ? <ImagesCard id={gridIndex.imageId} enableHeaderLinks={true} enableBottomActions={true} /> : ''}
             </Grid>;
           }

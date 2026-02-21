@@ -8,14 +8,12 @@ import PageInput from "../pagination/PageInput";
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import { useMemo } from "react";
 
 export default function NavPagination () {
   const dispatch = useAppDispatch();
 
   // pagination
-  const isFirstPageSelectorMemo = useMemo(() => isFirstPageSelector(), [])
-  const isFirstPage = useAppSelector(isFirstPageSelectorMemo);
+  const isFirstPage = useAppSelector(isFirstPageSelector);
 
   // handle chaning the items per page
   const handlePageClick = (type: PaginationChangeType) => {
@@ -25,10 +23,10 @@ export default function NavPagination () {
   return (
     <AppBar position="fixed" color="inherit" sx={{ top: 'auto', bottom: 0 }} >
       <Container maxWidth={'md'}>
-        <Toolbar disableGutters sx={{minHeight: '68px'}}>
-          <Grid container justifyContent="space-between" sx={{minHeight: '68px', paddingTop: '14px'}}>
-            <Grid item>
-              <Button 
+        <Toolbar disableGutters sx={{minHeight: '68px', width: '100%'}}>
+          <Grid container justifyContent="space-between" sx={{minHeight: '68px', paddingTop: '14px', width: '100%'}}>
+            <Grid>
+              <Button
                 sx={{display: {xs: 'none', md: 'flex'}}}
                 onClick={() => handlePageClick(PaginationChangeType.firstPage)}
                 disabled={isFirstPage}
@@ -45,8 +43,8 @@ export default function NavPagination () {
                 <KeyboardDoubleArrowLeftIcon />
               </IconButton>
             </Grid>
-            <Grid item>
-              <Button 
+            <Grid>
+              <Button
                 sx={{display: {xs: 'none', md: 'flex'}}}
                 onClick={() => handlePageClick(PaginationChangeType.previousPage)}
                 disabled={isFirstPage}
@@ -63,11 +61,11 @@ export default function NavPagination () {
                 <KeyboardArrowLeftIcon />
               </IconButton>
             </Grid>
-            <Grid item>
+            <Grid>
               <PageInput />
             </Grid>
-            <Grid item>
-              <Button 
+            <Grid>
+              <Button
                 sx={{display: {xs: 'none', md: 'flex'}}}
                 onClick={() => handlePageClick(PaginationChangeType.nextPage)}
                 endIcon={<KeyboardArrowRightIcon />}
@@ -83,7 +81,7 @@ export default function NavPagination () {
                 <KeyboardArrowRightIcon />
               </IconButton>
             </Grid>
-            <Grid item>
+            <Grid>
               <LimitSelect />
             </Grid>
           </Grid>
