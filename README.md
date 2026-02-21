@@ -4,8 +4,8 @@ A high-performance image gallery and editor built with React and TypeScript. Fea
 
 **[🚀 Live Demo](https://qialex.github.io/react-gallery/)**
 
-[//]: # (![Gallery View]&#40;docs/screenshot-gallery.png&#41;)
-[//]: # (![Editor View]&#40;docs/screenshot-editor.png&#41;)
+![Gallery View](docs/screenshot-gallery.png)
+![Editor View](docs/screenshot-editor.png)
 
 ## Key Features
 
